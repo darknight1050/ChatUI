@@ -70,12 +70,14 @@ void AddChatObject(string text){
 
 void OnChatMessage(IRCMessage message, TwitchIRCClient* client)
 {
-    for(string name : *Config.Blacklist)
-        if(name.compare(message.prefix.nick) == 0)
+    for(string name : *Config.Blacklist){
+        if(name.compare(message.prefix.nick) == 0){
+            log(INFO, "Twitch Chat: Blacklisted user %s sent the message: %s", message.prefix.nick.c_str(), message.parameters.at(message.parameters.size() - 1).c_str());
             return;
-    if(usersColorCache.find(message.prefix.nick) == usersColorCache.end()){
-        usersColorCache.insert(pair<string, string>(message.prefix.nick, int_to_hex(rand() % 0x1000000, 6)));
+        }
     }
+    if(usersColorCache.find(message.prefix.nick) == usersColorCache.end())
+        usersColorCache.insert(pair<string, string>(message.prefix.nick, int_to_hex(rand() % 0x1000000, 6)));
     string text = "<color=" + usersColorCache[message.prefix.nick] + ">" + message.prefix.nick + "</color>: " + message.parameters.at(message.parameters.size() - 1);
     log(INFO, "Twitch Chat: %s", text.c_str());
     AddChatObject(text);
