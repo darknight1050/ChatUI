@@ -1,17 +1,15 @@
 #include "../include/main.hpp"
 
-using namespace std;
-
 static rapidjson::Document& config_doc = Configuration::config;
 
 static TwitchIRCClient* client = nullptr;
-static map<string, string> usersColorCache;
+static std::map<std::string, std::string> usersColorCache;
 
 static Il2CppObject* assetBundle = nullptr;
 static Il2CppObject* customUIObject = nullptr;
 static Il2CppObject* chatObject_Template = nullptr;
-static vector<ChatObject*> chatObjects;
-static vector<ChatObject*> chatObjectsToAdd;
+static std::vector<ChatObject*> chatObjects;
+static std::vector<ChatObject*> chatObjectsToAdd;
 static const int maxVisibleObjects = 24;
 
 static long long lastUpdate = 0;
@@ -25,7 +23,7 @@ static bool reloadAsset = false;
 void UpdateList(){
     if(!chatObjectsToAdd.empty())
         needUpdate = true;
-    long long currentTime = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();;
+    long long currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();;
     if(chatObject_Template != nullptr && needUpdate && currentTime-lastUpdate > 100){
         needUpdate = false;
         lastUpdate = currentTime;
@@ -62,7 +60,7 @@ void UpdateList(){
     }
 }
 
-void AddChatObject(string text){
+void AddChatObject(std::string text){
     ChatObject* chatObject = new ChatObject();
     chatObject->Text.assign(text.c_str(), text.size());
     chatObjectsToAdd.push_back(chatObject);   
@@ -70,15 +68,15 @@ void AddChatObject(string text){
 
 void OnChatMessage(IRCMessage message, TwitchIRCClient* client)
 {
-    for(string name : *Config.Blacklist){
+    for(std::string name : *Config.Blacklist){
         if(name.compare(message.prefix.nick) == 0){
             log(INFO, "Twitch Chat: Blacklisted user %s sent the message: %s", message.prefix.nick.c_str(), message.parameters.at(message.parameters.size() - 1).c_str());
             return;
         }
     }
     if(usersColorCache.find(message.prefix.nick) == usersColorCache.end())
-        usersColorCache.insert(pair<string, string>(message.prefix.nick, int_to_hex(rand() % 0x1000000, 6)));
-    string text = "<color=" + usersColorCache[message.prefix.nick] + ">" + message.prefix.nick + "</color>: " + message.parameters.at(message.parameters.size() - 1);
+        usersColorCache.insert(pair<std::string, std::string>(message.prefix.nick, int_to_hex(rand() % 0x1000000, 6)));
+    std::string text = "<color=" + usersColorCache[message.prefix.nick] + ">" + message.prefix.nick + "</color>: " + message.parameters.at(message.parameters.size() - 1);
     log(INFO, "Twitch Chat: %s", text.c_str());
     AddChatObject(text);
 }
@@ -130,7 +128,7 @@ void OnLoadAssetComplete(Il2CppObject* asset){
     needUpdate = true;
     if(!threadStarted){
         threadStarted = true;
-        thread twitchIRCThread(TwitchIRCThread);
+        std::thread twitchIRCThread(TwitchIRCThread);
         twitchIRCThread.detach();
     }
 }
@@ -179,9 +177,9 @@ void SaveConfig() {
     config_doc.RemoveAllMembers();
     config_doc.SetObject();
     rapidjson::Document::AllocatorType& allocator = config_doc.GetAllocator();
-    config_doc.AddMember("Nick", string(Config.Nick), allocator);
-    config_doc.AddMember("OAuth", string(Config.OAuth), allocator);
-    config_doc.AddMember("Channel", string(Config.Channel), allocator);
+    config_doc.AddMember("Nick", std::string(Config.Nick), allocator);
+    config_doc.AddMember("OAuth", std::string(Config.OAuth), allocator);
+    config_doc.AddMember("Channel", std::string(Config.Channel), allocator);
     rapidjson::Value menuValue(rapidjson::kObjectType);
     {
         rapidjson::Value positionValue(rapidjson::kObjectType);
@@ -222,7 +220,7 @@ void SaveConfig() {
     }
     rapidjson::Value Blacklist(rapidjson::kArrayType);
     {
-        for(string name : *Config.Blacklist){
+        for(std::string name : *Config.Blacklist){
             rapidjson::Value nameValue;
             nameValue.SetString(name.c_str(), name.length(), allocator);
             Blacklist.PushBack(nameValue, allocator);
@@ -239,7 +237,7 @@ bool LoadConfig() {
     bool foundEverything = true;
     if(config_doc.HasMember("Nick") && config_doc["Nick"].IsString()){
         char* buffer = (char*)malloc(config_doc["Nick"].GetStringLength());
-        string data(config_doc["Nick"].GetString());
+        std::string data(config_doc["Nick"].GetString());
         transform(data.begin(), data.end(), data.begin(), [](unsigned char c){ return tolower(c); });
         Config.Nick = data;
     }else{
@@ -248,13 +246,13 @@ bool LoadConfig() {
     if(config_doc.HasMember("OAuth") && config_doc["OAuth"].IsString()){
         char* buffer = (char*)malloc(config_doc["OAuth"].GetStringLength());
         strcpy(buffer, config_doc["OAuth"].GetString());
-        Config.OAuth = string(buffer);   
+        Config.OAuth = std::string(buffer);   
     }else{
         foundEverything = false;
     }
     if(config_doc.HasMember("Channel") && config_doc["Channel"].IsString()){
         char* buffer = (char*)malloc(config_doc["Channel"].GetStringLength());
-        string data(config_doc["Channel"].GetString());
+        std::string data(config_doc["Channel"].GetString());
         transform(data.begin(), data.end(), data.begin(), [](unsigned char c){ return tolower(c); });
         strcpy(buffer, data.c_str());
         Config.Channel = data;
@@ -344,8 +342,8 @@ bool LoadConfig() {
         foundEverything = false;
     }
     if(Config.Blacklist == nullptr)
-        Config.Blacklist = new vector<string>();
-    for(string name : *Config.Blacklist){
+        Config.Blacklist = new std::vector<std::string>();
+    for(std::string name : *Config.Blacklist){
         free((void*)name.c_str());
     }
     Config.Blacklist->clear();
@@ -354,12 +352,12 @@ bool LoadConfig() {
             if(config_doc["Blacklist"][i].IsString()){
                 char* buffer = (char*)malloc(config_doc["Blacklist"][i].GetStringLength());
                 strcpy(buffer, config_doc["Blacklist"][i].GetString());
-                Config.Blacklist->push_back(string(buffer));
+                Config.Blacklist->push_back(std::string(buffer));
             }
         }
     }else{
-        Config.Blacklist->push_back(string("dootybot"));
-        Config.Blacklist->push_back(string("nightbot"));
+        Config.Blacklist->push_back(std::string("dootybot"));
+        Config.Blacklist->push_back(std::string("nightbot"));
         foundEverything = false;
     }
     if(foundEverything){
