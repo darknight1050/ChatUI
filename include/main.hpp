@@ -2,6 +2,7 @@
 #include <dlfcn.h>
 #include <vector>
 #include <map>
+#include <thread>
 #include <chrono>
 #include <iomanip>
 #include "../extern/beatsaber-hook/shared/utils/utils.h"

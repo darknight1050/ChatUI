@@ -101,6 +101,7 @@ void TwitchIRCThread(){
         }
     }
 }
+
 void OnLoadAssetComplete(Il2CppObject* asset){
     il2cpp_utils::RunMethod(&customUIObject, il2cpp_utils::GetClassFromName("UnityEngine", "Object"), "Instantiate", asset);
 
@@ -169,8 +170,6 @@ MAKE_HOOK_OFFSETLESS(SceneManager_SetActiveScene, bool, int scene)
     }
     return SceneManager_SetActiveScene(scene);
 }
-
-void QuestUIOnInitialized(){}
 
 void SaveConfig() {
     log(INFO, "Saving Configuration...");
@@ -247,6 +246,8 @@ bool LoadConfig() {
         char* buffer = (char*)malloc(config_doc["OAuth"].GetStringLength());
         strcpy(buffer, config_doc["OAuth"].GetString());
         Config.OAuth = std::string(buffer);   
+        if(Config.OAuth.rfind("oauth:", 0) != 0)
+            Config.OAuth = "oauth:" + Config.OAuth;
     }else{
         foundEverything = false;
     }
