@@ -1,10 +1,12 @@
 [submodule "beatsaber-hook"]
 	path = extern/beatsaber-hook
-	url = https://github.com/darknight1050/beatsaber-hook.git
-	branch = modSettings
+	url = https://github.com/zoller27osu/QuestMods.git
 [submodule "questui"]
 	path = extern/questui
 	url = https://github.com/darknight1050/questui
 [submodule "TwitchIRC"]
 	path = extern/TwitchIRC
 	url = https://github.com/darknight1050/TwitchIRC.git
+[submodule "CustomSabers"]
+	pathe = extern/CustomSabers
+	url = https://github.com/zoller27osu/QuestMods.git
