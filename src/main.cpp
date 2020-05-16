@@ -43,7 +43,7 @@ void UpdateList(){
                         Vector3 lastChatObjectPosition =  *CRASH_UNLESS(il2cpp_utils::RunMethod<Vector3>(lastChatObject->GameObject, "get_localPosition"));
                         Vector3 lastChatObjectSize = *CRASH_UNLESS(il2cpp_utils::RunMethod<Vector3>(lastChatObject->GameObject, "get_sizeDelta"));
                     }
-                    chatObject->GameObject = *CRASH_UNLESS(il2cpp_utils::RunMethod<Il2CppObject*>(il2cpp_utils::GetClassFromName("UnityEngine", "Object"), "Instantiate", chatObject_Template));
+                    chatObject->GameObject = *CRASH_UNLESS(il2cpp_utils::RunMethod("UnityEngine", "Object", "Instantiate", chatObject_Template));
                     il2cpp_utils::RunMethod(chatObject->GameObject, "set_name", il2cpp_utils::createcsstr("ChatObject"));
                     UnityHelper::SetSameParent(chatObject->GameObject, chatObject_Template);
                     UnityHelper::SetGameObjectActive(chatObject->GameObject, true);
@@ -53,7 +53,7 @@ void UpdateList(){
         while(maxVisibleObjects<chatObjects.size()){
             ChatObject* chatObject = chatObjects[0];
             if(chatObject->GameObject != nullptr)
-               il2cpp_utils::RunMethod(il2cpp_utils::GetClassFromName("UnityEngine", "Object"), "Destroy", UnityHelper::GetGameObject(chatObject->GameObject));
+               il2cpp_utils::RunMethod("UnityEngine", "Object", "Destroy", UnityHelper::GetGameObject(chatObject->GameObject));
             delete chatObject;
             chatObjects.erase(chatObjects.begin());
         }
@@ -103,11 +103,11 @@ void TwitchIRCThread(){
 }
 
 void OnLoadAssetComplete(Il2CppObject* asset){
-    customUIObject = *CRASH_UNLESS(il2cpp_utils::RunMethod<Il2CppObject*>(il2cpp_utils::GetClassFromName("UnityEngine", "Object"), "Instantiate", asset));
+    customUIObject = *CRASH_UNLESS(il2cpp_utils::RunMethod("UnityEngine", "Object", "Instantiate", asset));
 
     Il2CppObject* objectTransform;
 
-    objectTransform = *CRASH_UNLESS(il2cpp_utils::RunMethod<Il2CppObject*>(customUIObject, "get_transform"));
+    objectTransform = *CRASH_UNLESS(il2cpp_utils::RunMethod(customUIObject, "get_transform"));
     Vector3 scale;
     if(isInMenu){
         il2cpp_utils::RunMethod(objectTransform, "set_position", Config.PositionMenu);
@@ -152,12 +152,12 @@ MAKE_HOOK_OFFSETLESS(SceneManager_SetActiveScene, bool, int scene)
         for(int i = 0; i<chatObjects.size(); i++){
             chatObjects[i]->GameObject = nullptr;
         }
-        il2cpp_utils::RunMethod(il2cpp_utils::GetClassFromName("UnityEngine", "Object"), "Destroy", customUIObject);
+        il2cpp_utils::RunMethod("UnityEngine", "Object", "Destroy", customUIObject);
         customUIObject = nullptr;
         log(INFO, "Destroyed ChatUI!");
     }
     Il2CppString* nameObject;
-    nameObject = *CRASH_UNLESS(il2cpp_utils::RunMethod<Il2CppString*>(il2cpp_utils::GetClassFromName("UnityEngine.SceneManagement", "Scene"), "GetNameInternal", scene));
+    nameObject = *CRASH_UNLESS(il2cpp_utils::RunMethod<Il2CppString*>("UnityEngine.SceneManagement", "Scene", "GetNameInternal", scene));
     const char* name = to_utf8(csstrtostr(nameObject)).c_str();
     log(INFO, "Scene: %s", name);
     isInMenu = strcmp(name, "MenuViewControllers") == 0;

@@ -41,5 +41,9 @@ out/
 [Ll]ibs/
 [Oo]bj/
 [Oo]bjs/
+ndkpath.txt
 *.zip
+
 ChatUI.json
+
+discordmsg.md

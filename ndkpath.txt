@@ -1,1 +1,1 @@
-D:/GitHub/Tools/android-ndk-r21b/
+c:/Development/Tools/android-ndk-r20

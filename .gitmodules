@@ -1,9 +1,10 @@
 [submodule "beatsaber-hook"]
 	path = extern/beatsaber-hook
-	url = https://github.com/sc2ad/beatsaber-hook/
+	url = https://github.com/darknight1050/beatsaber-hook.git
+	branch = modSettings
 [submodule "questui"]
 	path = extern/questui
-	url = https://github.com/Calmly145/questui.git
+	url = https://github.com/darknight1050/questui.git
 [submodule "TwitchIRC"]
 	path = extern/TwitchIRC
-	url = https://github.com/Calmly145/TwitchIRC.git
+	url = https://github.com/darknight1050/TwitchIRC.git
