@@ -1,3 +1,6 @@
+#ifndef MAIN_H
+#define MAIN_H
+
 #pragma once
 #include <dlfcn.h>
 #include <vector>
@@ -8,6 +11,7 @@
 #include "../extern/beatsaber-hook/shared/utils/utils.h"
 #include "../extern/questui/questui.hpp"
 #include "../extern/TwitchIRC/TwitchIRCClient.hpp"
+#include "../extern/CustomSabers/AssetImporter.hpp"
 
 #define RAPIDJSON_HAS_STDSTRING 1
 
@@ -40,4 +44,4 @@ inline std::string int_to_hex(T val, size_t width=sizeof(T)*2)
     return ss.str();
 }
 
-
+#endif
