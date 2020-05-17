@@ -19,8 +19,6 @@ static bool boolTrue = true;
 static bool boolFalse = false;
 
 static struct Config_t {
-    std::string Nick = "";
-    std::string OAuth = "";
     std::string Channel = "";
     Vector3 PositionMenu = {0.0f, 4.4f, 4.0f};
     Vector3 RotationMenu = {-36.0f, 0.0f, 0.0f};

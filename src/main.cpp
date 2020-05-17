@@ -87,16 +87,19 @@ void TwitchIRCThread(){
     {
         if (client->Connect())
         {
-            if (client->Login(Config.Nick, Config.OAuth))
+            if (client->Login("justinfan" + std::to_string(1030307 + rand() % 1030307), "xxx"))
             {
-                log(INFO, "Twitch Chat: Logged In as %s!", Config.Nick.c_str());
+                log(INFO, "Twitch Chat: Logged In!");
                 client->HookIRCCommand("PRIVMSG", OnChatMessage);
                 if (client->JoinChannel(Config.Channel)){
                     log(INFO, "Twitch Chat: Joined Channel %s!", Config.Channel.c_str());
+                    AddChatObject("<color=#55FF00FF>Joined Channel:</color> <color=#FFCC00FF>" + Config.Channel + "</color>");
                     while (client->Connected())
                         client->ReceiveData();
                 }
             }
+            AddChatObject("<color=#FF0000FF>Disconnected!</color>");
+            client->Disconnect();
             log(INFO, "Twitch Chat: Disconnected!");
         }
     }
@@ -185,8 +188,6 @@ void SaveConfig() {
     config_doc.RemoveAllMembers();
     config_doc.SetObject();
     rapidjson::Document::AllocatorType& allocator = config_doc.GetAllocator();
-    config_doc.AddMember("Nick", std::string(Config.Nick), allocator);
-    config_doc.AddMember("OAuth", std::string(Config.OAuth), allocator);
     config_doc.AddMember("Channel", std::string(Config.Channel), allocator);
     rapidjson::Value menuValue(rapidjson::kObjectType);
     {
@@ -243,23 +244,6 @@ bool LoadConfig() {
     log(INFO, "Loading Configuration...");
     Configuration::Load();
     bool foundEverything = true;
-    if(config_doc.HasMember("Nick") && config_doc["Nick"].IsString()){
-        char* buffer = (char*)malloc(config_doc["Nick"].GetStringLength());
-        std::string data(config_doc["Nick"].GetString());
-        transform(data.begin(), data.end(), data.begin(), [](unsigned char c){ return tolower(c); });
-        Config.Nick = data;
-    }else{
-        foundEverything = false;
-    }
-    if(config_doc.HasMember("OAuth") && config_doc["OAuth"].IsString()){
-        char* buffer = (char*)malloc(config_doc["OAuth"].GetStringLength());
-        strcpy(buffer, config_doc["OAuth"].GetString());
-        Config.OAuth = std::string(buffer);   
-        if(Config.OAuth.rfind("oauth:", 0) != 0)
-            Config.OAuth = "oauth:" + Config.OAuth;
-    }else{
-        foundEverything = false;
-    }
     if(config_doc.HasMember("Channel") && config_doc["Channel"].IsString()){
         char* buffer = (char*)malloc(config_doc["Channel"].GetStringLength());
         std::string data(config_doc["Channel"].GetString());
