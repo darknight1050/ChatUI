@@ -1,6 +1,6 @@
 [submodule "beatsaber-hook"]
 	path = extern/beatsaber-hook
-	url = https://github.com/darknight1050/beatsaber-hook.git
+	url = https://github.com/sc2ad/beatsaber-hook.git
 	branch = modSettings
 [submodule "questui"]
 	path = extern/questui
