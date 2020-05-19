@@ -1,22 +1,11 @@
-#ifndef MAIN_H
-#define MAIN_H
-
 #pragma once
-#include <dlfcn.h>
-#include <vector>
-#include <map>
-#include <thread>
-#include <chrono>
+
+#include "../extern/beatsaber-hook/shared/utils/typedefs.h"
 #include <iomanip>
-#include "../extern/beatsaber-hook/shared/utils/utils.h"
-#include "../extern/questui/questui.hpp"
-#include "../extern/TwitchIRC/TwitchIRCClient.hpp"
-#include "../extern/CustomSabers/AssetImporter.hpp"
-
-#define RAPIDJSON_HAS_STDSTRING 1
-
-static bool boolTrue = true;
-static bool boolFalse = false;
+#include <sstream>
+#include <string>
+#include <string_view>
+#include <unordered_set>
 
 static struct Config_t {
     std::string Channel = "";
@@ -26,7 +15,7 @@ static struct Config_t {
     Vector3 PositionGame = {0.0f, 4.0f, 4.0f};
     Vector3 RotationGame = {-36.0f, 0.0f, 0.0f};
     Vector3 ScaleGame = {1.0f, 1.0f, 1.0f};
-    std::vector<std::string>* Blacklist = nullptr;
+    std::unordered_set<std::string> Blacklist;
 } Config;
 
 struct ChatObject {
@@ -35,11 +24,8 @@ struct ChatObject {
 };
 
 template <typename T>
-inline std::string int_to_hex(T val, size_t width=sizeof(T)*2)
-{
+inline std::string int_to_hex(T val, size_t width=sizeof(T)*2) {
     std::stringstream ss;
     ss << "#" << std::setfill('0') << std::setw(width) << std::hex << (val|0) << "ff";
     return ss.str();
 }
-
-#endif
