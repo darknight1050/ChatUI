@@ -1,1 +1,1 @@
-c:/Development/Tools/android-ndk-r20
+C:\Development\Tools\android-ndk-r21d

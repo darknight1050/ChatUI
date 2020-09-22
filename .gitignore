@@ -44,6 +44,10 @@ out/
 ndkpath.txt
 *.zip
 
-ChatUI.json
-
 discordmsg.md
+
+extern
+
+qpm.shared.json
+
+ChatUI.json

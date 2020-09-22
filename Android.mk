@@ -22,15 +22,46 @@ LOCAL_MODULE := hook
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
 include $(CLEAR_VARS)
-LOCAL_LDLIBS     := -llog
-LOCAL_CFLAGS     := -D'MOD_ID="ChatUI"' -D'VERSION="0.1.2"' -I'C:/Program Files/Unity/Hub/Editor/2019.3.1f1/Editor/Data/il2cpp/libil2cpp'
-LOCAL_MODULE     := chatui
-LOCAL_C_INCLUDES := ./include ./src
-LOCAL_SRC_FILES  := $(call rwildcard,extern/beatsaber-hook/shared/inline-hook/,*.cpp) $(call rwildcard,extern/beatsaber-hook/shared/utils/,*.cpp) $(call rwildcard,extern/beatsaber-hook/shared/inline-hook/,*.c)
-# In order to add configuration support to your project, uncomment the following line:
-LOCAL_SRC_FILES  += $(call rwildcard,extern/beatsaber-hook/shared/config/,*.cpp)
-# In order to add custom UI support to your project, uncomment the following line:
-# LOCAL_SRC_FILES  += $(call rwildcard,extern/beatsaber-hook/shared/customui/,*.cpp)
-# Add any new SRC includes from beatsaber-hook or other external libraries here
-LOCAL_SRC_FILES  += $(call rwildcard, extern/questui,*.cpp) $(call rwildcard, extern/TwitchIRC,*.cpp) $(call rwildcard,src/,*.cpp)
+LOCAL_MODULE := beatsaber-hook_0_6_0
+LOCAL_EXPORT_C_INCLUDES := extern/beatsaber-hook
+LOCAL_SRC_FILES := extern/libbeatsaber-hook_0_6_0.so
+LOCAL_EXPORT_C_FLAGS := -DNEED_UNSAFE_CSHARP
+include $(PREBUILT_SHARED_LIBRARY)
+
+# Creating prebuilt for dependency: modloader - version: 1.0.2
+include $(CLEAR_VARS)
+LOCAL_MODULE := modloader
+LOCAL_EXPORT_C_INCLUDES := extern/modloader
+LOCAL_SRC_FILES := extern/libmodloader.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+# Creating prebuilt for dependency: codegen - version: 0.2.4
+include $(CLEAR_VARS)
+LOCAL_MODULE := codegen_0_2_4
+LOCAL_EXPORT_C_INCLUDES := extern/codegen
+LOCAL_SRC_FILES := extern/libcodegen_0_2_4.so
+LOCAL_CPP_FEATURES += rtti exceptions 
+include $(PREBUILT_SHARED_LIBRARY)
+
+# Creating prebuilt for dependency: bs-utils - version: 0.4.2
+include $(CLEAR_VARS)
+LOCAL_MODULE := bs-utils
+LOCAL_EXPORT_C_INCLUDES := extern/bs-utils
+LOCAL_SRC_FILES := extern/libbs-utils.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+# If you would like to use more shared libraries (such as custom UI, utils, or more) add them here, following the format above. # In addition, ensure that you add them to the shared library build below. 
+include $(CLEAR_VARS) 
+LOCAL_MODULE := chatui 
+LOCAL_SRC_FILES := $(call rwildcard,src/**,*.cpp)
+LOCAL_SRC_FILES += $(call rwildcard,extern/beatsaber-hook/src/inline-hook,*.cpp) 
+LOCAL_SRC_FILES += $(call rwildcard,extern/beatsaber-hook/src/inline-hook,*.c) 
+LOCAL_SRC_FILES += $(call rwildcard,extern/TwitchIRC/**,*.cpp)
+LOCAL_SHARED_LIBRARIES += modloader
+LOCAL_SHARED_LIBRARIES += beatsaber-hook_0_6_0
+LOCAL_SHARED_LIBRARIES += codegen_0_2_4
+LOCAL_SHARED_LIBRARIES += bs-utils
+LOCAL_LDLIBS += -llog 
+LOCAL_CFLAGS += -isystem"./extern/libil2cpp/il2cpp/libil2cpp" -isystem"extern" -I"extern/codegen/include"  
+LOCAL_C_INCLUDES += ./include ./src 
 include $(BUILD_SHARED_LIBRARY)
