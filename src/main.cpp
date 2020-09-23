@@ -6,7 +6,7 @@
 #include "extern/TwitchIRC/TwitchIRCClient.hpp"
 
 
-#include "UnityEngine/Transform.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/SceneManagement/Scene.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "bs-utils/shared/AssetBundle.hpp"
@@ -122,20 +122,18 @@ void TwitchIRCThread() {
     }
 }
 void FindChatObject_Template(){
-    Array<UnityEngine::Component*>* children = customUIObject->GetComponentsInChildren(il2cpp_utils::GetSystemType("UnityEngine", "RectTransform"), true);
+    Array<UnityEngine::RectTransform*>* children = customUIObject->GetComponentsInChildren<UnityEngine::RectTransform*>();
     for (int i = 0; i < children->Length(); i++) {
-        UnityEngine::Component* object = children->values[i];
-        if (object) {
-            if ("ChatObject_Template" == to_utf8(csstrtostr(CRASH_UNLESS(object->get_name())))) {
-                chatObject_Template = object->get_gameObject();
-                chatObject_Template->SetActive(false);
-            }
-        } 
+        UnityEngine::RectTransform* object = children->values[i];
+        if ("ChatObject_Template" == to_utf8(csstrtostr(object->get_name()))) {
+            chatObject_Template = object->get_gameObject();
+            chatObject_Template->SetActive(false);
+        }
     }
 }
 
 void OnLoadAssetComplete(bs_utils::Asset* asset) {
-    getLogger().info("Loaded Asset");
+    getLogger().info("Loaded Asset!");
     customUIObject = CRASH_UNLESS(UnityEngine::Object::Instantiate((UnityEngine::GameObject*)asset));
     customUIObject->set_name(il2cpp_utils::createcsstr("ChatUI"));
     UnityEngine::Transform* objectTransform = CRASH_UNLESS(customUIObject->get_transform());
@@ -180,11 +178,11 @@ MAKE_HOOK_OFFSETLESS(SceneManager_SetActiveScene, bool, UnityEngine::SceneManage
     if (isInMenu || name == "GameCore") {
         const char* assetBundlePath = "/sdcard/Android/data/com.beatgames.beatsaber/files/uis/chatUI.qui";
         if (!assetBundle) {
-            getLogger().info("Loading AssetBundle from chatUI.qui");
+            getLogger().info("Loading AssetBundle from chatUI.qui...");
             bs_utils::AssetBundle::LoadFromFileAsync(assetBundlePath, [](bs_utils::AssetBundle* bundle){ 
                 assetBundle = bundle;
                 if (assetBundle) {
-                    getLogger().info("Loading Asset from AssetBundle");
+                    getLogger().info("Loading Asset from AssetBundle...");
                     assetBundle->LoadAssetAsync("_customasset", [](bs_utils::Asset* asset){
                         OnLoadAssetComplete(asset);
                     }, il2cpp_utils::GetSystemType("UnityEngine", "GameObject"));
@@ -196,7 +194,7 @@ MAKE_HOOK_OFFSETLESS(SceneManager_SetActiveScene, bool, UnityEngine::SceneManage
                 FindChatObject_Template();
                 needUpdate = true;
             }else{
-                getLogger().info("Loading Asset from AssetBundle");
+                getLogger().info("Loading Asset from AssetBundle...");
                 assetBundle->LoadAssetAsync("_customasset", [](bs_utils::Asset* asset){
                     OnLoadAssetComplete(asset);
                 }, il2cpp_utils::GetSystemType("UnityEngine", "GameObject"));
