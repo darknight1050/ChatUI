@@ -19,7 +19,7 @@
 static ModInfo modInfo;
 
 const Logger& getLogger() {
-  static const Logger& logger(modInfo);
+  static const Logger logger(modInfo, LoggerOptions(false, true));
   return logger;
 }
 
@@ -304,7 +304,7 @@ bool LoadConfig() {
 extern "C" void setup(ModInfo& info) 
 {
     modInfo.id = "ChatUI";
-    modInfo.version = "0.1.3";
+    modInfo.version = "0.1.4";
     info = modInfo;
 }
 

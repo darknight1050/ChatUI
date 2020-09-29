@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../extern/beatsaber-hook/shared/utils/typedefs.h"
+#include "extern/beatsaber-hook/shared/utils/typedefs.h"
 #include <iomanip>
 #include <sstream>
 #include <string>
