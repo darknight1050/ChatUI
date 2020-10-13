@@ -19,7 +19,7 @@
 static ModInfo modInfo;
 
 const Logger& getLogger() {
-  static const Logger logger(modInfo, LoggerOptions(false, true));
+  static const Logger logger(modInfo, LoggerOptions(false, false));
   return logger;
 }
 

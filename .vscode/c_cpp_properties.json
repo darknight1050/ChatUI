@@ -1,21 +1,22 @@
 {
-    "configurations": [
-        {
-            "name": "Quest",
-            "defines": [
-                "__GNUC__",
-                "__aarch64__"
-            ],
-            "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/extern/**",
-                "${workspaceFolder}/extern/codegen/include/**",
-                "C:/Development/Tools/android-ndk-r21d/**"
-            ],
-            "cStandard": "c11",
-            "cppStandard": "c++20",
-            "intelliSenseMode": "clang-x64"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "defines": [
+        "__GNUC__",
+        "__aarch64__",
+        "VERSION=\"0.1.5\""
+      ],
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/extern/**",
+        "${workspaceFolder}/extern/codegen/include/**",
+        "C:/Development/Tools/android-ndk-r21d/**"
+      ],
+      "name": "Quest",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "clang-x64"
+    }
+  ],
+  "version": 4
 }
