@@ -7,4 +7,4 @@ if (-not ($PSVersionTable.PSEdition -eq "Core")) {
 }
 
 & $buildScript NDK_PROJECT_PATH=$PSScriptRoot APP_BUILD_SCRIPT=$PSScriptRoot/Android.mk NDK_APPLICATION_MK=$PSScriptRoot/Application.mk
-Compress-Archive -Force -Path "./libs/arm64-v8a/libchatui.so","./bmbfmod.json","./chatUI.qui","./extern/libbeatsaber-hook_0_7_1.so","./extern/libbs-utils.so","./extern/libcodegen_0_2_6.so" -DestinationPath "./chatui_v0.1.4.zip"
+Compress-Archive -Force -Path "./libs/arm64-v8a/libchatui.so","./bmbfmod.json","./chatUI.qui","./extern/libbeatsaber-hook_0_7_1.so","./extern/libbs-utils.so","./extern/libcodegen_0_2_6.so" -DestinationPath "./chatui_v0.1.5.zip"
