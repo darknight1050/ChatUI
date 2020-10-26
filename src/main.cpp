@@ -34,8 +34,8 @@ static bs_utils::AssetBundle* assetBundle = nullptr;
 static UnityEngine::GameObject* customUIObject = nullptr;
 static UnityEngine::GameObject* customUIMenuObject = nullptr;
 static UnityEngine::GameObject* chatObject_Template = nullptr;
-static std::deque<ChatObject*> chatObjects;
-static std::queue<ChatObject*> chatObjectsToAdd;
+static std::deque<ChatObject> chatObjects;
+static std::queue<ChatObject> chatObjectsToAdd;
 static const int maxVisibleObjects = 24;
 
 static long long lastUpdate = 0;
@@ -57,30 +57,27 @@ void UpdateList() {
             chatObjectsToAdd.pop();
         }
         for (int i = 0; i < chatObjects.size(); i++) {
-            ChatObject* chatObject = chatObjects[i];
-            if (!chatObject->GameObject) {
-                chatObject->GameObject = CRASH_UNLESS(UnityEngine::GameObject::Instantiate(chatObject_Template));
-                chatObject->GameObject->set_name(il2cpp_utils::createcsstr("ChatObject"));
-                chatObject->GameObject->get_transform()->SetParent(chatObject_Template->get_transform()->GetParent(), false);
-                chatObject->GameObject->SetActive(true);
-                TMPro::TextMeshProUGUI* textObject = (TMPro::TextMeshProUGUI*)CRASH_UNLESS(chatObject->GameObject->GetComponentInChildren(il2cpp_utils::GetSystemType("TMPro", "TextMeshProUGUI"), true));
-                textObject->set_text(il2cpp_utils::createcsstr(chatObject->Text));
+            ChatObject chatObject = chatObjects[i];
+            if (!chatObject.GameObject) {
+                chatObject.GameObject = CRASH_UNLESS(UnityEngine::GameObject::Instantiate(chatObject_Template));
+                chatObject.GameObject->set_name(il2cpp_utils::createcsstr("ChatObject"));
+                chatObject.GameObject->get_transform()->SetParent(chatObject_Template->get_transform()->GetParent(), false);
+                chatObject.GameObject->SetActive(true);
+                TMPro::TextMeshProUGUI* textObject = (TMPro::TextMeshProUGUI*)CRASH_UNLESS(chatObject.GameObject->GetComponentInChildren(typeof(TMPro::TextMeshProUGUI*), true));
+                textObject->set_text(il2cpp_utils::createcsstr(chatObject.Text));
             }
         }
         while (maxVisibleObjects < chatObjects.size()) {
-            ChatObject* chatObject = chatObjects.front();
-            if (chatObject->GameObject)
-                UnityEngine::Object::Destroy(chatObject->GameObject);
+            ChatObject chatObject = chatObjects.front();
+            if (chatObject.GameObject)
+                UnityEngine::Object::Destroy(chatObject.GameObject);
             chatObjects.pop_front();
-            delete chatObject;
         }
     }
 }
 
 void AddChatObject(std::string&& text) {
-    ChatObject* chatObject = new ChatObject();
-    chatObject->Text = text;
-    chatObjectsToAdd.push(chatObject);
+    chatObjectsToAdd.push(ChatObject{text, nullptr});
 }
 
 void OnChatMessage(IRCMessage message, TwitchIRCClient* client) {
@@ -165,8 +162,8 @@ MAKE_HOOK_OFFSETLESS(SceneManager_SetActiveScene, bool, UnityEngine::SceneManage
             customUIMenuObject = customUIObject; 
         chatObject_Template = nullptr;
         for (int i = 0; i < chatObjects.size(); i++) {
-            UnityEngine::Object::Destroy(chatObjects[i]->GameObject);
-            chatObjects[i]->GameObject = nullptr;
+            UnityEngine::Object::Destroy(chatObjects[i].GameObject);
+            chatObjects[i].GameObject = nullptr;
         }
         if(!isInMenu)
             UnityEngine::Object::Destroy(customUIObject);
