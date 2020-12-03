@@ -1,1 +1,0 @@
-call adb logcat | findstr ChatUI

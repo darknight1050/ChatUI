@@ -1,3 +1,0 @@
-[submodule "TwitchIRC"]
-	path = extern/TwitchIRC
-	url = https://github.com/darknight1050/TwitchIRC.git
