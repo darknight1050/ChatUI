@@ -1,10 +1,6 @@
 # Builds a .zip file for loading with BMBF
-$NDKPath = Get-Content $PSScriptRoot/ndkpath.txt
+& $PSScriptRoot/build.ps1
 
-$buildScript = "$NDKPath/build/ndk-build"
-if (-not ($PSVersionTable.PSEdition -eq "Core")) {
-    $buildScript += ".cmd"
+if ($?) {
+    Compress-Archive -Path "./libs/arm64-v8a/libChatUI_2.0.so", "./libs/arm64-v8a/libbeatsaber-hook_0_8_4.so", "./bmbfmod.json" -DestinationPath "./ChatUI_2.0_v0.1.0.zip" -Update
 }
-
-& $buildScript NDK_PROJECT_PATH=$PSScriptRoot APP_BUILD_SCRIPT=$PSScriptRoot/Android.mk NDK_APPLICATION_MK=$PSScriptRoot/Application.mk
-Compress-Archive -Force -Path "./libs/arm64-v8a/libchatui.so","./bmbfmod.json","./chatUI.qui","./extern/libbeatsaber-hook_0_7_7.so","./extern/libbs-utils.so","./extern/libcodegen_0_3_4.so" -DestinationPath "./chatui_v0.1.6.zip"

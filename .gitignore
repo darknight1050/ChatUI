@@ -43,11 +43,7 @@ out/
 [Oo]bjs/
 ndkpath.txt
 *.zip
-
-discordmsg.md
-
-extern
-
+*.txt
+extern/
+Android.mk.backup
 qpm.shared.json
-
-ChatUI.json

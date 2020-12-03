@@ -2,16 +2,16 @@
   "sharedDir": "shared",
   "dependenciesDir": "extern",
   "info": {
-    "name": "ChatUI",
-    "id": "ChatUI",
-    "version": "0.1.6",
+    "name": "Chat UI",
+    "id": "ChatUI_2.0",
+    "version": "2.0.0",
     "url": "https://github.com/darknight1050/ChatUI",
     "additionalData": {}
   },
   "dependencies": [
     {
       "id": "beatsaber-hook",
-      "versionRange": "0.7.7",
+      "versionRange": "^0.8.0",
       "additionalData": {
         "extraFiles": [
           "src/inline-hook"
@@ -19,13 +19,23 @@
       }
     },
     {
+      "id": "custom-types",
+      "versionRange": "*",
+      "additionalData": {}
+    },
+    {
+      "id": "questui",
+      "versionRange": "*",
+      "additionalData": {}
+    },
+    {
       "id": "codegen",
-      "versionRange": "0.3.4",
+      "versionRange": "*",
       "additionalData": {}
     },
     {
       "id": "bs-utils",
-      "versionRange": "0.4.8",
+      "versionRange": "*",
       "additionalData": {}
     }
   ],
