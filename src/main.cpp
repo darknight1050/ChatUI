@@ -90,6 +90,7 @@ void TwitchIRCThread() {
         } catch(const std::exception& e) {
             getLogger().error("ReceiveData Error %s", e.what());
         }
+        threadRunning = false;
     });
 
     std::string currentChannel = "";
