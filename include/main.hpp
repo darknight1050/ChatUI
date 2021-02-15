@@ -1,14 +1,29 @@
 #pragma once
 
-// Include the modloader header, which allows us to tell the modloader which mod this is, and the version etc.
-#include "modloader/shared/modloader.hpp"
+#include <iomanip>
+#include <sstream>
+#include <string>
 
-// beatsaber-hook is a modding framework that lets us call functions and fetch field values from in the game
-// It also allows creating objects, configuration, and importantly, hooking methods to modify their values
-#include "beatsaber-hook/shared/utils/logging.hpp"
-#include "beatsaber-hook/shared/config/config-utils.hpp"
-#include "beatsaber-hook/shared/utils/il2cpp-functions.hpp"
+#include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Vector2.hpp"
 
-// Define these functions here so that we can easily read configuration and log information from other files
-Configuration& getConfig();
-const Logger& getLogger();
+struct Config_t {
+    std::string Channel = "";
+    UnityEngine::Vector3 PositionMenu = {0.0f, 4.4f, 4.0f};
+    UnityEngine::Vector3 RotationMenu = {-36.0f, 0.0f, 0.0f};
+    UnityEngine::Vector2 SizeMenu = {60.0f, 80.0f};
+    float ScaleMenu = 1.0f;
+    UnityEngine::Vector3 PositionGame = {0.0f, 4.0f, 4.0f};
+    UnityEngine::Vector3 RotationGame = {-36.0f, 0.0f, 0.0f};
+    float ScaleGame = 1.0f;
+    std::unordered_set<std::string> Blacklist;
+};
+
+extern Config_t Config;
+
+template <typename T>
+inline std::string int_to_hex(T val, size_t width=sizeof(T)*2) {
+    std::stringstream ss;
+    ss << "#" << std::setfill('0') << std::setw(width) << std::hex << (val|0) << "ff";
+    return ss.str();
+}

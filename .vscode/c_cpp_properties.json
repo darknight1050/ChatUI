@@ -2,17 +2,15 @@
   "configurations": [
     {
       "defines": [
-        "VERSION=\"0.1.0\"",
         "__GNUC__",
-        "__aarch64__"
+        "__aarch64__",
+        "VERSION=\"0.2.0\""
       ],
       "includePath": [
         "${workspaceFolder}/**",
-        "${workspaceFolder}/shared",
-        "${workspaceFolder}/include",
         "${workspaceFolder}/extern/**",
-        "${workspaceFolder}/extern/libil2cpp/il2cpp/libil2cpp",
-        "D:/VR/Quest_Mod_Dev/TOOLS/android-ndk-r21d/**"
+        "${workspaceFolder}/extern/codegen/include/**",
+        "C:/Development/Tools/android-ndk-r21d/**"
       ],
       "name": "Quest",
       "cStandard": "c11",
