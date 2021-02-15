@@ -87,7 +87,9 @@
 			"type_traits": "cpp",
 			"unordered_set": "cpp",
 			"utility": "cpp",
-			"valarray": "cpp"
+			"valarray": "cpp",
+			"__memory": "cpp",
+			"filesystem": "cpp"
 		}
 	}
 }

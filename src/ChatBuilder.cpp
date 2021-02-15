@@ -19,19 +19,18 @@ using namespace HMUI;
 using namespace TMPro;
 
 //BAD STUFF I KNOW
-UnityEngine::GameObject* chatGameObject = nullptr;
 ChatUI::ChatHandler* chatHandler = nullptr;
 
 void CreateChatGameObject() {
-    if(chatGameObject) 
+    if(chatHandler) 
         return;
-    chatGameObject = BeatSaberUI::CreateCanvas();
+    UnityEngine::GameObject* chatGameObject = BeatSaberUI::CreateCanvas();
     Object::DestroyImmediate(chatGameObject->GetComponent<VRUIControls::VRGraphicRaycaster*>());
     Object::DontDestroyOnLoad(chatGameObject);
     
     chatHandler = chatGameObject->AddComponent<ChatUI::ChatHandler*>();
     chatGameObject->AddComponent<RectMask2D*>();
-    chatGameObject->AddComponent<Backgroundable*>()->ApplyBackgroundWithAlpha(il2cpp_utils::createcsstr("round-rect-panel"), 0.8f);
+    chatGameObject->AddComponent<Backgroundable*>()->ApplyBackgroundWithAlpha(il2cpp_utils::createcsstr("round-rect-panel"), 0.75f);
     RectTransform* transform = chatGameObject->GetComponent<RectTransform*>();
 
     VerticalLayoutGroup* layout = BeatSaberUI::CreateVerticalLayoutGroup(transform);

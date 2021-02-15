@@ -7,26 +7,42 @@
 #include "questui/shared/BeatSaberUI.hpp"
 
 #include "UnityEngine/Rect.hpp"
+#include "UnityEngine/SceneManagement/SceneManager.hpp"
+#include "UnityEngine/SceneManagement/Scene.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 
 #include "CustomTypes/ChatHandler.hpp"
 
 #include "customlogger.hpp"
 
-#include "main.hpp"
+#include "ModConfig.hpp"
 
 DEFINE_CLASS(ChatUI::ChatHandler);
 
 using namespace QuestUI;
 using namespace UnityEngine;
+using namespace UnityEngine::SceneManagement;
 using namespace UnityEngine::UI;
 using namespace TMPro;
 
 void ChatUI::ChatHandler::Update() {
     if(!LayoutTransform && !Canvas) return;
-    SetPosition(Config.PositionMenu);
-    SetRotation(Config.RotationMenu);
-    SetSize(Config.SizeMenu);
+
+    SceneManagement::Scene activeScene = SceneManager::GetActiveScene();
+    if(activeScene.IsValid()){
+        std::string sceneName = to_utf8(csstrtostr(activeScene.get_name()));
+        auto position = getModConfig().PositionMenu.GetValue();
+        auto rotation = getModConfig().RotationMenu.GetValue();
+        auto size = getModConfig().SizeMenu.GetValue();
+        if(sceneName == "GameCore" || getModConfig().ForceGame.GetValue()) {
+            position = getModConfig().PositionGame.GetValue();
+            rotation = getModConfig().RotationGame.GetValue();
+            size = getModConfig().SizeGame.GetValue();
+        }
+        SetPosition(position);
+        SetRotation(rotation);
+        SetSize(size);
+    }
 
     std::lock_guard<std::mutex> guard(chatObjectsMutex);
     for (auto it = chatObjects.begin(); it != chatObjects.end(); it++) {
@@ -40,9 +56,9 @@ void ChatUI::ChatHandler::Update() {
         } else {
             TextMeshProUGUI* text = BeatSaberUI::CreateText(LayoutTransform, object.Text);
             text->set_enableWordWrapping(true);
-            text->set_fontSize(2.4f);
+            text->set_fontSize(3.2f);
             text->set_alignment(TextAlignmentOptions::MidlineLeft);
-            text->set_margin(UnityEngine::Vector4(1.0f, 0.0f, 1.0f, 0.0f));
+            text->set_margin(UnityEngine::Vector4(1.0f, 0.0f, 0.0f, 0.0f));
             object.GameObject = text->get_gameObject();
         }
     }
