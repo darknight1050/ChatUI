@@ -77,22 +77,7 @@ void TwitchIRCThread() {
         return;
     threadRunning = true;
     getLogger().info("Thread Started!");
-    TwitchIRCClient* client = new TwitchIRCClient();
-
-    //Pretty bad but couldn't get it non blocking otherwise
-    std::thread recvThread([client] { 
-        try{
-            while(threadRunning) { 
-                if(client->Connected()) 
-                    client->ReceiveData(); 
-                std::this_thread::yield();
-            }
-        } catch(const std::exception& e) {
-            getLogger().error("ReceiveData Error %s", e.what());
-        }
-        threadRunning = false;
-    });
-
+    TwitchIRCClient client = TwitchIRCClient();
     std::string currentChannel = "";
     using namespace std::chrono;
     milliseconds lastJoinTry = 0ms;
@@ -100,17 +85,19 @@ void TwitchIRCThread() {
     bool wasConnected = false;
     while(threadRunning) {
         auto currentTime = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch());
-        if(client->Connected()) {
+        if(client.Connected()) {
             std::string targetChannel = getModConfig().Channel.GetValue();
             if(currentChannel != targetChannel) {
                 if ((currentTime - lastJoinTry).count() > JOIN_RETRY_DELAY) {
                     lastJoinTry = currentTime; 
-                    if(client->JoinChannel(targetChannel)) {
+                    if(client.JoinChannel(targetChannel)) {
                         currentChannel = targetChannel;
                         getLogger().info("Twitch Chat: Joined Channel %s!", currentChannel.c_str());
                         AddChatObject("<color=#FFFFFFFF>Joined Channel:</color> <color=#FFB300FF>" + currentChannel + "</color>");
                     }
                 }
+            }else{
+                client.ReceiveData();
             }
         } else {
             if(wasConnected) {
@@ -121,13 +108,13 @@ void TwitchIRCThread() {
             if ((currentTime - lastConnectTry).count() > CONNECT_RETRY_DELAY) {
                 getLogger().info("Twitch Chat: Connecting...");
                 lastConnectTry = currentTime;
-                if (client->InitSocket()) {
-                    if (client->Connect()) {
-                        if (client->Login("justinfan" + std::to_string(1030307 + rand() % 1030307), "xxx")) {
+                if (client.InitSocket()) {
+                    if (client.Connect()) {
+                        if (client.Login("justinfan" + std::to_string(1030307 + rand() % 1030307), "xxx")) {
                             wasConnected = true;
                             AddChatObject("<color=#FFFFFFFF>Logged In!</color>");
                             getLogger().info("Twitch Chat: Logged In!");
-                            client->HookIRCCommand("PRIVMSG", OnChatMessage);
+                            client.HookIRCCommand("PRIVMSG", OnChatMessage);
                         }
                     }
                 }
@@ -135,15 +122,13 @@ void TwitchIRCThread() {
         }
         std::this_thread::yield();
     }
-    recvThread.join();
     if(wasConnected) {
         wasConnected = false;
         getLogger().info("Twitch Chat: Disconnected!");
         AddChatObject("<color=#FF0000FF>Disconnected!</color>");
     }
     threadRunning = false;
-    client->Disconnect();
-    delete client;
+    client.Disconnect();
     getLogger().info("Thread Stopped!");
 }
 
