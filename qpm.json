@@ -13,7 +13,7 @@
   "dependencies": [
     {
       "id": "questui",
-      "versionRange": "^0.4.4",
+      "versionRange": "^0.5.0",
       "additionalData": {}
     },
     {
