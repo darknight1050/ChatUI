@@ -26,10 +26,14 @@ DECLARE_CLASS_CODEGEN(ChatUI, ChatHandler, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(UnityEngine::RectTransform*, LayoutTransform);
 
     DECLARE_METHOD(void, Update);
+
+    DECLARE_OVERRIDE_METHOD(void, Finalize, il2cpp_utils::FindMethod("System", "Object", "Finalize"));
     
     REGISTER_FUNCTION(Backgroundable,
         REGISTER_FIELD(LayoutTransform);
+        
         REGISTER_METHOD(Update);
+        REGISTER_METHOD(Finalize);
     )
     
 )

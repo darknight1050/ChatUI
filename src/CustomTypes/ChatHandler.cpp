@@ -28,7 +28,7 @@ using namespace TMPro;
 void ChatUI::ChatHandler::Update() {
     if(!LayoutTransform && !Canvas) return;
 
-    SceneManagement::Scene activeScene = SceneManager::GetActiveScene();
+    Scene activeScene = SceneManager::GetActiveScene();
     if(activeScene.IsValid()){
         std::string sceneName = to_utf8(csstrtostr(activeScene.get_name()));
         auto position = getModConfig().PositionMenu.GetValue();
@@ -62,6 +62,10 @@ void ChatUI::ChatHandler::Update() {
             object.GameObject = text->get_gameObject();
         }
     }
+}
+
+void ChatUI::ChatHandler::Finalize() {
+    chatObjects.~vector();
 }
 
 void ChatUI::ChatHandler::SetPosition(UnityEngine::Vector3 position) {
