@@ -17,7 +17,7 @@
 
 #include "ModConfig.hpp"
 
-DEFINE_CLASS(ChatUI::ChatHandler);
+DEFINE_TYPE(ChatUI::ChatHandler);
 
 using namespace QuestUI;
 using namespace UnityEngine;

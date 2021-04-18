@@ -29,7 +29,7 @@ DECLARE_CLASS_CODEGEN(ChatUI, ChatHandler, UnityEngine::MonoBehaviour,
 
     DECLARE_OVERRIDE_METHOD(void, Finalize, il2cpp_utils::FindMethod("System", "Object", "Finalize"));
     
-    REGISTER_FUNCTION(Backgroundable,
+    REGISTER_FUNCTION(
         REGISTER_FIELD(LayoutTransform);
         
         REGISTER_METHOD(Update);
