@@ -7,6 +7,7 @@
 #include "custom-types/shared/register.hpp"
 
 #include "questui/shared/QuestUI.hpp"
+#include "questui/shared/CustomTypes/Components/MainThreadScheduler.hpp"
 
 #include "UnityEngine/SceneManagement/Scene.hpp"
 
@@ -115,6 +116,7 @@ void TwitchIRCThread() {
                             AddChatObject("<color=#FFFFFFFF>Logged In!</color>");
                             getLogger().info("Twitch Chat: Logged In!");
                             client.HookIRCCommand("PRIVMSG", OnChatMessage);
+                            currentChannel = "";
                         }
                     }
                 }
@@ -136,11 +138,15 @@ MAKE_HOOK_OFFSETLESS(SceneManager_Internal_ActiveSceneChanged, void, UnityEngine
     SceneManager_Internal_ActiveSceneChanged(prevScene, nextScene);
     if(nextScene.IsValid()) {
         std::string sceneName = to_utf8(csstrtostr(nextScene.get_name()));
-        if(sceneName.find("MenuViewControllers") != std::string::npos) {
-            if(!chatHandler)
-                CreateChatGameObject();
-            if (!threadRunning)
-                std::thread (TwitchIRCThread).detach();
+        if(sceneName.find("Menu") != std::string::npos) {
+            QuestUI::MainThreadScheduler::Schedule(
+                [] {
+                    if(!chatHandler)
+                        CreateChatGameObject();
+                    if (!threadRunning)
+                        std::thread (TwitchIRCThread).detach();
+                }
+            );
         }
     }
 }
