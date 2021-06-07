@@ -169,7 +169,7 @@ extern "C" void load() {
 
     QuestUI::Init();
 
-    custom_types::Register::RegisterTypes<ChatUI::ChatHandler>();
+    custom_types::Register::AutoRegister();
 
     QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
 
