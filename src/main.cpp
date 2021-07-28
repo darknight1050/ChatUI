@@ -1,6 +1,5 @@
-
-#include "beatsaber-hook/shared/utils/utils.h"
-#include "beatsaber-hook/shared/config/config-utils.hpp"
+#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
+#include "beatsaber-hook/shared/utils/hooking.hpp"
 
 #include "TwitchIRC/TwitchIRCClient.hpp"
 
@@ -10,6 +9,7 @@
 #include "questui/shared/CustomTypes/Components/MainThreadScheduler.hpp"
 
 #include "UnityEngine/SceneManagement/Scene.hpp"
+#include "UnityEngine/SceneManagement/SceneManager.hpp"
 
 #include "CustomTypes/ChatHandler.hpp"
 #include "ChatBuilder.hpp"
@@ -134,7 +134,9 @@ void TwitchIRCThread() {
     getLogger().info("Thread Stopped!");
 }
 
-MAKE_HOOK_OFFSETLESS(SceneManager_Internal_ActiveSceneChanged, void, UnityEngine::SceneManagement::Scene prevScene, UnityEngine::SceneManagement::Scene nextScene) {
+MAKE_HOOK_MATCH(SceneManager_Internal_ActiveSceneChanged,
+                &UnityEngine::SceneManagement::SceneManager::Internal_ActiveSceneChanged,
+                void, UnityEngine::SceneManagement::Scene prevScene, UnityEngine::SceneManagement::Scene nextScene) {
     SceneManager_Internal_ActiveSceneChanged(prevScene, nextScene);
     if(nextScene.IsValid()) {
         std::string sceneName = to_utf8(csstrtostr(nextScene.get_name()));
@@ -173,7 +175,7 @@ extern "C" void load() {
 
     QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
 
-    INSTALL_HOOK_OFFSETLESS(getLogger(), SceneManager_Internal_ActiveSceneChanged, il2cpp_utils::FindMethodUnsafe("UnityEngine.SceneManagement", "SceneManager", "Internal_ActiveSceneChanged", 2));
+    INSTALL_HOOK(getLogger(), SceneManager_Internal_ActiveSceneChanged);
     
     getLogger().info("Successfully installed ChatUI!");
 }
