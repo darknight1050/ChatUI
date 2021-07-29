@@ -1,4 +1,9 @@
-# ChatUI
-There is curently ony a version for Beat saber 1.11.1, and can be found under the [Legacy-BS-1.11.1](https://github.com/darknight1050/ChatUI/tree/Legacy-BS-1.11.1) Branch.
+# Chat UI
 
-We are currently working to rewite the mod to make it work with the most recent version of the game if you wanna help check out the [ChatUI_2.0-Dev](https://github.com/darknight1050/ChatUI/tree/ChatUI_2.0-Dev) branch
+Stream Chat In Game
+
+## Credits
+
+* [zoller27osu](https://github.com/zoller27osu), [Sc2ad](https://github.com/Sc2ad) and [jakibaki](https://github.com/jakibaki) - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)
+* [raftario](https://github.com/raftario) 
+* [Lauriethefish](https://github.com/Lauriethefish) and [danrouse](https://github.com/danrouse) for [this template](https://github.com/Lauriethefish/quest-mod-template)
