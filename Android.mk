@@ -18,12 +18,6 @@ TARGET_ARCH_ABI := $(APP_ABI)
 
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
-# Creating prebuilt for dependency: codegen - version: 0.13.0
-include $(CLEAR_VARS)
-LOCAL_MODULE := codegen_0_13_0
-LOCAL_EXPORT_C_INCLUDES := extern/codegen
-LOCAL_SRC_FILES := extern/libcodegen_0_13_0.so
-include $(PREBUILT_SHARED_LIBRARY)
 # Creating prebuilt for dependency: beatsaber-hook - version: 2.3.0
 include $(CLEAR_VARS)
 LOCAL_MODULE := beatsaber-hook_2_3_0
@@ -43,11 +37,17 @@ LOCAL_MODULE := custom-types
 LOCAL_EXPORT_C_INCLUDES := extern/custom-types
 LOCAL_SRC_FILES := extern/libcustom-types.so
 include $(PREBUILT_SHARED_LIBRARY)
-# Creating prebuilt for dependency: questui - version: 0.11.0
+# Creating prebuilt for dependency: questui - version: 0.11.1
 include $(CLEAR_VARS)
 LOCAL_MODULE := questui
 LOCAL_EXPORT_C_INCLUDES := extern/questui
 LOCAL_SRC_FILES := extern/libquestui.so
+include $(PREBUILT_SHARED_LIBRARY)
+# Creating prebuilt for dependency: codegen - version: 0.14.0
+include $(CLEAR_VARS)
+LOCAL_MODULE := codegen
+LOCAL_EXPORT_C_INCLUDES := extern/codegen
+LOCAL_SRC_FILES := extern/libcodegen.so
 include $(PREBUILT_SHARED_LIBRARY)
 
 # If you would like to use more shared libraries (such as custom UI, utils, or more) add them here, following the format above. # In addition, ensure that you add them to the shared library build below. 
@@ -59,9 +59,9 @@ LOCAL_SRC_FILES += $(call rwildcard,extern/beatsaber-hook/src/inline-hook,*.c)
 LOCAL_SRC_FILES += $(call rwildcard,include/TwitchIRC/**,*.cpp)
 LOCAL_SHARED_LIBRARIES += modloader
 LOCAL_SHARED_LIBRARIES += beatsaber-hook_2_3_0
-LOCAL_SHARED_LIBRARIES += codegen_0_13_0
 LOCAL_SHARED_LIBRARIES += custom-types
 LOCAL_SHARED_LIBRARIES += questui
+LOCAL_SHARED_LIBRARIES += codegen
 LOCAL_LDLIBS += -llog 
 LOCAL_CFLAGS += -DVERSION='"0.0.1"'
 LOCAL_C_INCLUDES += ./include ./shared ./src ./extern ./extern/libil2cpp/il2cpp/libil2cpp ./extern/codegen/include
