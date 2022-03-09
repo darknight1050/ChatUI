@@ -1,9 +1,9 @@
-#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "beatsaber-hook/shared/utils/hooking.hpp"
-
-#include "TwitchIRC/TwitchIRCClient.hpp"
+#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
 #include "custom-types/shared/register.hpp"
+
+#include "TwitchIRC/TwitchIRCClient.hpp"
 
 #include "questui/shared/QuestUI.hpp"
 #include "questui/shared/CustomTypes/Components/MainThreadScheduler.hpp"
@@ -23,7 +23,7 @@
 #include <sstream>
 #include <chrono>
 
-static ModInfo modInfo;
+ModInfo modInfo;
 
 Logger& getLogger() {
     static auto logger = new Logger(modInfo, LoggerOptions(false, true));
@@ -153,8 +153,7 @@ MAKE_HOOK_MATCH(SceneManager_Internal_ActiveSceneChanged,
     }
 }
 
-extern "C" void setup(ModInfo& info) 
-{
+extern "C" void setup(ModInfo& info) {
     modInfo.id = "ChatUI";
     modInfo.version = VERSION;
     info = modInfo;

@@ -44,12 +44,13 @@ out/
 ndkpath.txt
 *.zip
 
-discordmsg.md
-
-extern
-
 qpm.shared.json
 
 Android.mk.backup
-
-ChatUI.json
+extern.cmake
+qpm_defines.cmake
+mod.json
+extern/
+build/
+*.qmod
+*.log
