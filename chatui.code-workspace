@@ -89,7 +89,17 @@
 			"utility": "cpp",
 			"valarray": "cpp",
 			"__memory": "cpp",
-			"filesystem": "cpp"
+			"filesystem": "cpp",
+			"xlocmes": "cpp",
+			"xlocmon": "cpp",
+			"xlocnum": "cpp",
+			"xloctime": "cpp",
+			"span": "cpp",
+			"xhash": "cpp",
+			"xlocinfo": "cpp",
+			"xstring": "cpp",
+			"xtree": "cpp",
+			"xutility": "cpp"
 		}
 	}
 }
