@@ -97,9 +97,8 @@ void TwitchIRCThread() {
                         AddChatObject("<color=#FFFFFFFF>Joined Channel:</color> <color=#FFB300FF>" + currentChannel + "</color>");
                     }
                 }
-            }else{
-                client.ReceiveData();
             }
+            client.ReceiveData();
         } else {
             if(wasConnected) {
                 wasConnected = false;

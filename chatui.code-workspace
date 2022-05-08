@@ -99,7 +99,8 @@
 			"xlocinfo": "cpp",
 			"xstring": "cpp",
 			"xtree": "cpp",
-			"xutility": "cpp"
+			"xutility": "cpp",
+			"xiosbase": "cpp"
 		}
 	}
 }
