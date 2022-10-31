@@ -7,7 +7,11 @@
     "version": "0.2.9",
     "url": "https://github.com/darknight1050/ChatUI",
     "additionalData": {
-      "overrideSoName": "libchatui.so"
+      "soLink": "https://github.com/darknight1050/ChatUI/releases/download/v0.2.9/libchatui.so",
+      "debugSoLink": "https://github.com/darknight1050/ChatUI/releases/download/v0.2.9/debug_libchatui.so",
+      "overrideSoName": "libchatui.so",
+      "modLink": "https://github.com/darknight1050/ChatUI/releases/download/v0.2.9/ChatUI.qmod",
+      "branchName": "version-v0.2.9"
     }
   },
   "dependencies": [
