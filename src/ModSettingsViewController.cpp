@@ -24,7 +24,7 @@ void DidActivate(ViewController* self, bool firstActivation, bool addedToHierarc
         layout->set_childControlWidth(true);
         auto layoutParent = layout->get_transform();
         
-        auto stringSetting = AddConfigValueStringSetting(layoutParent, getModConfig().Channel);
+        auto stringSetting = AddConfigValueInputString(layoutParent, getModConfig().Channel);
 
         //Use underline from button because text doesn't work somehow with this width
         auto underscoreButton = BeatSaberUI::CreateUIButton(layoutParent, "", UnityEngine::Vector2(0.0f, 0.0f), UnityEngine::Vector2(4.0f, 8.0f), [stringSetting] {

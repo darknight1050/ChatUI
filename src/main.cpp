@@ -30,8 +30,6 @@ Logger& getLogger() {
     return *logger;
 }
 
-DEFINE_CONFIG(ModConfig);
-
 //TODO: Add to ModConfig
 std::unordered_set<std::string> Blacklist;
 
